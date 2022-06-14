@@ -6,6 +6,7 @@ namespace TVAnnouncements
         public bool ShowDailyLuck { get; set; }
         public bool ShowDailyLuckNumber { get; set; }
         public bool ShowWeatherForcast { get; set; }
+        public bool ShowIslandWeatherForecast { get; set; }
         public bool ShowQueenOfSauce { get; set; }
         public int NotificationDuration { get; set; }
 

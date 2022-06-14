@@ -45,6 +45,13 @@ namespace TVAnnouncements
                 //tooltip: () => "An optional description shown as a tooltip to the player.",
                 getValue: () => this.Config.ShowWeatherForcast,
                 setValue: value => this.Config.ShowWeatherForcast = value
+            ); 
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Show Daily Weather Forcast For Ginger Island",
+                tooltip: () => "Would only be shown if player visited the island",
+                getValue: () => this.Config.ShowIslandWeatherForecast,
+                setValue: value => this.Config.ShowIslandWeatherForecast = value
             );
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
@@ -129,6 +136,19 @@ namespace TVAnnouncements
                 HUDMessage forcastMessage = new HUDMessage(forcast, new Color(), Config.NotificationDuration, true);    //the Color variable does nothing
                 forcastMessage.noIcon = true;
                 Game1.addHUDMessage(forcastMessage);
+            }
+
+            if (Config.ShowIslandWeatherForecast)
+            {
+                if (!Game1.player.hasOrWillReceiveMail("Visited_Island"))
+                {
+                    return;
+                }
+                var islandForecast = this.Helper.Reflection.GetMethod(new TV(), "getIslandWeatherForecast").Invoke<string>();
+                islandForecast = islandForecast.Substring(0, Math.Min(maxTextLength, islandForecast.Length));
+                HUDMessage islandMessage = new HUDMessage(islandForecast, new Color(), Config.NotificationDuration, true) 
+                    {noIcon = true}; //the Color variable does nothing
+                Game1.addHUDMessage(islandMessage);
             }
         }
 
